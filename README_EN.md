@@ -2,7 +2,7 @@
 
 [中文](README.md) | **English**
 
-> Enterprise-grade SSH management tool for Claude Code, making remote server operations as simple and efficient as local ones
+> Enterprise-grade SSH management tool for Codex, Kiro, OpenCode, Claude, and other AI clients, making remote server operations as simple and efficient as local ones
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -28,7 +28,7 @@
 | **Daemon Mode** | **~0.12s** | **~1.2s** | **~3.6s** | **🔥 3.75x** |
 
 - Auto-start daemon on first connection
-- Multiple Claude Code instances share connections
+- Multiple AI client sessions/instances share connections
 - Automatic heartbeat detection and reconnection
 - Auto-exit after 30 minutes idle
 
@@ -150,44 +150,56 @@ pip install paramiko
 
 ### Configuration
 
-1. Place the `ssh-skill` directory under `~/.claude/skills/`
-2. Configure SSH key or password authentication
-3. Start using!
+1. Place `ssh-skill` under the skills directory of your AI client
+2. Ensure `<SKILL_SCRIPTS_DIR>` points to that skill's `scripts` directory
+3. Configure SSH key or password authentication
+4. Start using!
+
+Common locations:
+
+| Client | Skill Root | `<SKILL_SCRIPTS_DIR>` |
+|--------|------------|-----------------------|
+| Codex | `~/.codex/skills/ssh-skill` | `~/.codex/skills/ssh-skill/scripts` |
+| Kiro | `~/.kiro/skills/ssh-skill` | `~/.kiro/skills/ssh-skill/scripts` |
+| OpenCode | `~/.opencode/skills/ssh-skill` | `~/.opencode/skills/ssh-skill/scripts` |
+| Claude (compatibility) | `~/.claude/skills/ssh-skill` | `~/.claude/skills/ssh-skill/scripts` |
 
 ## 🎬 Quick Start
+
+Replace `<SKILL_SCRIPTS_DIR>` with your actual path (see Installation > Configuration above).
 
 ### Execute Remote Commands
 
 ```bash
-python ~/.claude/skills/ssh-skill/scripts/ssh_execute.py prod-web-01 "systemctl status nginx"
+python <SKILL_SCRIPTS_DIR>/ssh_execute.py prod-web-01 "systemctl status nginx"
 ```
 
 ### Upload Files
 
 ```bash
 # Small files (fast)
-MSYS_NO_PATHCONV=1 python ~/.claude/skills/ssh-skill/scripts/ssh_upload.py prod-web-01 ./app.tar.gz /tmp/
+MSYS_NO_PATHCONV=1 python <SKILL_SCRIPTS_DIR>/ssh_upload.py prod-web-01 ./app.tar.gz /tmp/
 
 # Large files (auto progress display)
-MSYS_NO_PATHCONV=1 python ~/.claude/skills/ssh-skill/scripts/ssh_upload.py prod-web-01 ./large-file.iso /tmp/
+MSYS_NO_PATHCONV=1 python <SKILL_SCRIPTS_DIR>/ssh_upload.py prod-web-01 ./large-file.iso /tmp/
 
 # Resume support
-MSYS_NO_PATHCONV=1 python ~/.claude/skills/ssh-skill/scripts/ssh_upload.py prod-web-01 ./large-file.iso /tmp/ --resume
+MSYS_NO_PATHCONV=1 python <SKILL_SCRIPTS_DIR>/ssh_upload.py prod-web-01 ./large-file.iso /tmp/ --resume
 
 # Recursive directory upload
-MSYS_NO_PATHCONV=1 python ~/.claude/skills/ssh-skill/scripts/ssh_upload.py prod-web-01 ./dist/ /var/www/html/ --recursive
+MSYS_NO_PATHCONV=1 python <SKILL_SCRIPTS_DIR>/ssh_upload.py prod-web-01 ./dist/ /var/www/html/ --recursive
 ```
 
 ### Download Files
 
 ```bash
-MSYS_NO_PATHCONV=1 python ~/.claude/skills/ssh-skill/scripts/ssh_download.py prod-web-01 /var/log/app.log ./app.log
+MSYS_NO_PATHCONV=1 python <SKILL_SCRIPTS_DIR>/ssh_download.py prod-web-01 /var/log/app.log ./app.log
 ```
 
 ### Server-to-Server Transfer
 
 ```bash
-MSYS_NO_PATHCONV=1 python ~/.claude/skills/ssh-skill/scripts/ssh_server_transfer.py source-server /data/backup.tar.gz target-server /backup/
+MSYS_NO_PATHCONV=1 python <SKILL_SCRIPTS_DIR>/ssh_server_transfer.py source-server /data/backup.tar.gz target-server /backup/
 ```
 
 ## 🎯 Use Cases
@@ -357,9 +369,9 @@ Host internal-server
     ProxyJump bastion
 ```
 
-## 🎨 Integration with Claude Code
+## 🎨 Integration with AI Clients (Codex/Kiro/OpenCode/Claude)
 
-In Claude Code, AI automatically uses ssh-skill for all SSH operations:
+In Codex, Kiro, OpenCode, Claude, and similar clients, AI can use ssh-skill in the same way for SSH operations:
 
 ```
 User: Check Nginx status on prod-web-01
@@ -407,3 +419,4 @@ Michael Zhang - [@badseal](https://github.com/badseal)
 ---
 
 **Making remote server operations as simple and efficient as local ones!** 🚀
+

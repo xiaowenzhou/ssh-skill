@@ -2,7 +2,7 @@
 
 **中文** | [English](README_EN.md)
 
-> 为 Claude Code 打造的企业级 SSH 管理工具，让远程服务器操作像本地一样简单高效
+> 面向 Codex、Kiro、OpenCode、Claude 等 AI 客户端的企业级 SSH 管理工具，让远程服务器操作像本地一样简单高效
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -28,7 +28,7 @@
 | **守护进程** | **~0.12s** | **~1.2s** | **~3.6s** | **🔥 3.75x** |
 
 - 首次连接自动启动守护进程
-- 多个 Claude Code 实例共享连接
+- 多个 AI 客户端会话/实例共享连接
 - 自动心跳检测和断线重连
 - 空闲 30 分钟自动退出
 
@@ -150,44 +150,56 @@ pip install paramiko
 
 ### 配置
 
-1. 将 `ssh-skill` 目录放到 `~/.claude/skills/` 下
-2. 配置 SSH 密钥或密码认证
-3. 开始使用！
+1. 将 `ssh-skill` 目录放到你正在使用的 AI 客户端 skills 目录下
+2. 确认命令中的 `<SKILL_SCRIPTS_DIR>` 指向该目录下的 `scripts`
+3. 配置 SSH 密钥或密码认证
+4. 开始使用！
+
+常见目录：
+
+| 客户端 | Skill 根目录 | `<SKILL_SCRIPTS_DIR>` |
+|------|-------------|-----------------------|
+| Codex | `~/.codex/skills/ssh-skill` | `~/.codex/skills/ssh-skill/scripts` |
+| Kiro | `~/.kiro/skills/ssh-skill` | `~/.kiro/skills/ssh-skill/scripts` |
+| OpenCode | `~/.opencode/skills/ssh-skill` | `~/.opencode/skills/ssh-skill/scripts` |
+| Claude（兼容） | `~/.claude/skills/ssh-skill` | `~/.claude/skills/ssh-skill/scripts` |
 
 ## 🎬 快速开始
+
+命令中的 `<SKILL_SCRIPTS_DIR>` 请替换为你的实际目录（见上方安装配置）。
 
 ### 执行远程命令
 
 ```bash
-python ~/.claude/skills/ssh-skill/scripts/ssh_execute.py prod-web-01 "systemctl status nginx"
+python <SKILL_SCRIPTS_DIR>/ssh_execute.py prod-web-01 "systemctl status nginx"
 ```
 
 ### 上传文件
 
 ```bash
 # 小文件（快速）
-MSYS_NO_PATHCONV=1 python ~/.claude/skills/ssh-skill/scripts/ssh_upload.py prod-web-01 ./app.tar.gz /tmp/
+MSYS_NO_PATHCONV=1 python <SKILL_SCRIPTS_DIR>/ssh_upload.py prod-web-01 ./app.tar.gz /tmp/
 
 # 大文件（自动显示进度）
-MSYS_NO_PATHCONV=1 python ~/.claude/skills/ssh-skill/scripts/ssh_upload.py prod-web-01 ./large-file.iso /tmp/
+MSYS_NO_PATHCONV=1 python <SKILL_SCRIPTS_DIR>/ssh_upload.py prod-web-01 ./large-file.iso /tmp/
 
 # 断点续传
-MSYS_NO_PATHCONV=1 python ~/.claude/skills/ssh-skill/scripts/ssh_upload.py prod-web-01 ./large-file.iso /tmp/ --resume
+MSYS_NO_PATHCONV=1 python <SKILL_SCRIPTS_DIR>/ssh_upload.py prod-web-01 ./large-file.iso /tmp/ --resume
 
 # 递归上传目录
-MSYS_NO_PATHCONV=1 python ~/.claude/skills/ssh-skill/scripts/ssh_upload.py prod-web-01 ./dist/ /var/www/html/ --recursive
+MSYS_NO_PATHCONV=1 python <SKILL_SCRIPTS_DIR>/ssh_upload.py prod-web-01 ./dist/ /var/www/html/ --recursive
 ```
 
 ### 下载文件
 
 ```bash
-MSYS_NO_PATHCONV=1 python ~/.claude/skills/ssh-skill/scripts/ssh_download.py prod-web-01 /var/log/app.log ./app.log
+MSYS_NO_PATHCONV=1 python <SKILL_SCRIPTS_DIR>/ssh_download.py prod-web-01 /var/log/app.log ./app.log
 ```
 
 ### 服务器间传输
 
 ```bash
-MSYS_NO_PATHCONV=1 python ~/.claude/skills/ssh-skill/scripts/ssh_server_transfer.py source-server /data/backup.tar.gz target-server /backup/
+MSYS_NO_PATHCONV=1 python <SKILL_SCRIPTS_DIR>/ssh_server_transfer.py source-server /data/backup.tar.gz target-server /backup/
 ```
 
 ## 🎯 使用场景
@@ -357,9 +369,9 @@ Host internal-server
     ProxyJump bastion
 ```
 
-## 🎨 与 Claude Code 集成
+## 🎨 与 AI 客户端集成（Codex/Kiro/OpenCode/Claude）
 
-在 Claude Code 中，AI 会自动使用 ssh-skill 处理所有 SSH 操作：
+在 Codex、Kiro、OpenCode、Claude 等客户端中，AI 都可以按同样方式自动调用 ssh-skill：
 
 ```
 用户：在 prod-web-01 上检查 Nginx 状态
@@ -407,3 +419,4 @@ Michael Zhang - [@badseal](https://github.com/badseal)
 ---
 
 **让远程服务器操作像本地一样简单高效！** 🚀
+
