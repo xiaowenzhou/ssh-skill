@@ -1,7 +1,7 @@
 ---
 name: ssh-skill
 version: 3.3.0
-description: "CRITICAL: This skill MUST be used for ALL SSH operations. NEVER use bash 'ssh' or 'scp' commands directly - always use this skill instead. Triggers: ANY mention of 'SSH', 'ssh', 'remote server', 'connect to server', server IPs (e.g., 192.168.x.x, 10.0.x.x), hostnames (e.g., user@host.com, server.example.com), 'login to', 'upload to server', 'download from server', 'deploy', 'run on server', 'check server', 'server status', 'execute remotely', 'bastion host', 'jump host', '跳板机', '服务器', '远程', '连接', '登录', '上传', '下载', '部署', 'transfer between servers', '服务器间传输', '迁移', 'migrate', 'server to server', 'tunnel', 'port forward', '端口转发', '隧道', 'database', '数据库连接', 'internal service', '内网访问'. If user mentions ANY server operations or provides server connection details, use this skill. This skill provides daemon-based persistent connections, connection pooling, jump host support, server-to-server transfer, SSH tunneling, automatic error recovery, and significant performance boost. DO NOT use for: local commands, localhost, current directory operations."
+description: "Use for SSH, SCP, SFTP, remote server commands, uploads/downloads, deploys, jump hosts, tunnels, port forwarding, database/internal-service access, server-to-server transfers, and Chinese server-operation requests such as 服务器, 远程, 连接, 登录, 上传, 下载, 部署, 跳板机, 隧道, 端口转发. Provides persistent daemon connections, pooling, jump host support, transfers, tunneling, and automatic recovery. Do not use for local commands, localhost, or current-directory operations."
 allowed-tools: Bash, Read, Write, Glob
 keywords: SSH,服务器,远程,连接,命令,上传,下载,文件传输,跳板机,批量,集群,deploy,部署,运维,登录,执行,查看,检查,管理,操作,访问,传输,迁移,服务器间,tunnel,隧道,端口转发,数据库,内网
 ---
@@ -478,4 +478,3 @@ python "<SKILL_SCRIPTS_DIR>/ssh_config_manager_v3.py" find "<关键词>"
 
 - Python 3.8+
 - paramiko（SSH 连接和文件传输）
-
